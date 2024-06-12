@@ -186,7 +186,7 @@ var settings = {
   DAS: 6,
   ARR: 0,
   Gravity: 0,
-  'Soft Drop': 63,
+  'Soft Drop': 82,
   'Lock Delay': 30,
   Size: 0,
   Sound: 0,
