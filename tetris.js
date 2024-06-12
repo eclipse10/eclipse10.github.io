@@ -191,7 +191,7 @@ var settings = {
   Size: 0,
   Sound: 0,
   Volume: 100,
-  Block: 0,
+  Block: 1,
   Ghost: 0,
   Grid: 0,
   Outline: 0,
