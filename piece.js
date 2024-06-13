@@ -53,6 +53,19 @@ function Piece() {
           rotated[i][this.tetro.length - 1 - row] = this.tetro[row][i];
         }
       }
+    } else if (direction === 2) {
+        for (var i = this.tetro.length - 1; i >= 0; i--) {
+        rotated[i] = [];
+        for (var row = 0; row < this.tetro.length; row++) {
+          rotated[i][this.tetro.length - 1 - row] = this.tetro[row][i];
+        }
+      }
+        for (var i = this.tetro.length - 1; i >= 0; i--) {
+        rotated[i] = [];
+        for (var row = 0; row < this.tetro.length; row++) {
+          rotated[i][this.tetro.length - 1 - row] = this.tetro[row][i];
+        }
+      }
     } else {
       for (var i = 0; i < this.tetro.length; i++) {
         rotated[i] = [];
