@@ -65,17 +65,14 @@ function Piece() {
     // Goes thorugh kick data until it finds a valid move.
     var curPos = this.pos.mod(4);
     var newPos = (this.pos + direction).mod(4);
+    const kick = `${curPos}${newPos}`
   
-    for (var x = 0, len = this.kickData[0].length; x < len; x++) {
-      if (this.moveValid(
-      this.kickData[curPos][x][0] - this.kickData[newPos][x][0],
-      this.kickData[curPos][x][1] - this.kickData[newPos][x][1],
+    for (const [dx, dy] of kickData[k]) {
+      if (this.moveValid(dx, dy,
       rotated
       )) {
-        this.x += this.kickData[curPos][x][0] -
-                  this.kickData[newPos][x][0];
-        this.y += this.kickData[curPos][x][1] -
-                  this.kickData[newPos][x][1];
+        this.x += dx;
+        this.y += dy;
         this.tetro = rotated;
         this.pos = newPos;
         break;
