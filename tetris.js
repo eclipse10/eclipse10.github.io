@@ -917,8 +917,7 @@ function update() {
     piece.rotate(1);
     piece.finesse++;
   } else if (flags.rot180 & keysDown && !(lastKeys & flags.rot180)) {
-    piece.rotate(0);
-    piece.rotate(0);
+    piece.rotate(2);
     piece.finesse++;
   }
 
