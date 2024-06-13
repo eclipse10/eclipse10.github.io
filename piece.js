@@ -67,7 +67,7 @@ function Piece() {
     var newPos = (this.pos + direction).mod(4);
     const kick = `${curPos}${newPos}`
   
-    for (const [dx, dy] of kickData[kick]) {
+    for (const [dx, dy] of [[0, 0], ...kickData[kick]]) {
       if (this.moveValid(dx, dy,
       rotated
       )) {
