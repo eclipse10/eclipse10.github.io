@@ -54,18 +54,20 @@ function Piece() {
         }
       }
     } else if (direction === 2) {
-        for (var i = this.tetro.length - 1; i >= 0; i--) {
-        rotated[i] = [];
-        for (var row = 0; row < this.tetro.length; row++) {
-          rotated[i][this.tetro.length - 1 - row] = this.tetro[row][i];
+      const rotateMatrix180 = (matrix: number[][]): number[][] => {
+        const n = matrix.length;
+        const rotated = Array.from({ length: n }, () => Array(n).fill(0));
+        
+        for (let i = 0; i < n; i++) {
+            for (let j = 0; j < n; j++) {
+                rotated[n - 1 - i][n - 1 - j] = matrix[i][j];
+            }
         }
-      }
-        for (var i = this.tetro.length - 1; i >= 0; i--) {
-        rotated[i] = [];
-        for (var row = 0; row < this.tetro.length; row++) {
-          rotated[i][this.tetro.length - 1 - row] = this.tetro[row][i];
-        }
-      }
+        
+        return rotated;
+      };
+
+      rotated = rotateMatrix180(this.tetro);
     } else {
       for (var i = 0; i < this.tetro.length; i++) {
         rotated[i] = [];
