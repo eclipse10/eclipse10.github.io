@@ -183,7 +183,7 @@ var kickDataI = {
 // Define shapes and spawns.
 var PieceI = {
   index: 0,
-  x: 2,
+  x: 3,
   y: -1,
   kickData: kickDataI,
   tetro: [
