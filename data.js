@@ -762,9 +762,9 @@ var dasNameArr = (function() {
 var lockDelayLimit = void 0;
 
 var mySettings = {
-  DAS: 9,
-  ARR: 1,
-  SoftDrop: 7,
+  DAS: 6,
+  ARR: 0,
+  SoftDrop: 10,
   Gravity: 0,
   LockDelay: 30,
   RotSys: 0,
