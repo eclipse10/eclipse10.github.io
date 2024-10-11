@@ -1,102 +1,231 @@
-<!doctype html> 
-  <meta charset=utf-8>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width"/>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>Tetr.js</title>
-  <link rel=stylesheet href=style.css>
-<div id=content>
+  <link rel="stylesheet" href="style.css">
+  <!--<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-554c83a8661bf358" async="async"></script>-->
+</head>
+<body>
+<!--<canvas id="bg"></canvas>-->
+<!--<video id="bg" src=bg.webm loop autoplay></video>-->
+<div id="touchOverlay" class="touchoverlay-disabled">
+  <div class="touchbutton" id="touchLeft" style="display:none"><i class="material-icons">&#xE5C4;</i></div>
+  <div class="touchbutton" id="touchRight" style="display:none"><i class="material-icons">&#xE5C8;</i></div>
+  <div class="touchbutton" id="touchDown" style="display:none"><i class="material-icons">&#xE906;</i></div>
+  <div class="touchbutton" id="touchDrop" style="display:none"><i class="material-icons">&#xE2C4;</i></div>
+  <div class="touchbutton" id="touchHold" style="display:none"><i class="material-icons">&#xE8D4;</i></div>
+  <div class="touchbutton" id="touchRotRight" style="display:none"><i class="material-icons">&#xE15A;</i></div>
+  <div class="touchbutton" id="touchRotLeft" style="display:none"><i class="material-icons">&#xE166;</i></div>
+  <div class="touchbutton" id="touchRot180" style="display:none"><i class="material-icons">&#xE5D5;</i></div>
+  <div class="touchbutton" id="touchLayout" style="display:none"><i class="material-icons">&#xE913;</i></div>
+</div>
+<div id="content">
 
   <!-- Canvases -->
-  <div id=d>
+  <div id="d">
     <h3>Hold</h3>
 
-    <div id=a>
-      <canvas id=hold></canvas>
-    </div>
-    <ul id=replay style=display:none>
-      <li><a onclick=replay(-1)>prev</a>
-      <li><a onclick=replay()>Play/Pause</a>
-      <li><a onclick=replay(1)>next</a>
-    </ul>
+    <div id="a">
+      <canvas id="hold"></canvas>
+      <br/>
 
-    <table class=stats>
-      <tr><td id=line>0<th>Line
-      <tr><td id=finesse>0<th>Finesse
-      <tr class="stats-inline"><th>Pieces<td id=piece>0
-      <tr class="stats-inline"><th>PPS<td id=pps>0.000
-      <tr><th id=time>00:00:00
+      <div id="divInp"></div>
+    </div>
+
+    <table id="stats">
+      <tr>
+        <th id="score">0</th>
+        <th>SCORE 分</th>
+      </tr>
+      <tr>
+        <td id="levelline"><div id="level"></div><div id="line">0</div></td>
+        <th>LINE 行</th>
+      </tr>
+      <tr>
+        <td id="piece">0</td>
+        <th>PIECE 块</th>
+      </tr>
+      <tr>
+        <th id="penalty"></th>
+        <th id="time"><canvas></canvas></th>
+      </tr>
     </table>
   </div>
 
-  <div id=b>
-    <canvas id=bgStack></canvas>
-    <canvas id=stack></canvas>
-    <canvas id=active></canvas>
+  <div id="b">
+    <canvas id="bgStack">请使用最新版的网页浏览器方可正常进行游戏。</canvas>
+    <canvas id="stack">You need an up-to-date web browser to play this game.</canvas>
+    <canvas id="active"></canvas>
 
-    <p id=msg>
+    <div id="msgdiv">
+      <span id="msg"></span>
+    </div>
 
-    <nav class='menu on'>
-      <h1>Tetr.js</h1>
-      <ul>
-        <li><a onclick=init(0)>Play Sprint</a>
-        <!--<li><a onclick=init(1)>Play Marathon</a>
-        <li><a onclick=init(2)>Play Ultra</a>-->
-        <li><a onclick=init(3)>Play Dig Race</a>
-        <li><a onclick=menu(2)><i class=></i>Controls</a>
-        <li><a onclick=menu(1)><i class=icon-cog></i>Settings</a>
-      </ul>
-    </nav>
+    <nav class="menu on">
+      <h1>Tetr.js - Dig v0.66</h1>
+      <p>
+        original: <a class="link" href="//simon.lc/tetr.js/">&gt;&gt;simonlc</a><br/>
+        enhanced: <a class="link" href="//doktorocelot.com/tetr.js/">&gt;&gt;drocelot</a><br/>
+        farter's Dig Mod</p>
+      <div class="btn-container">
+        <a class="btn" onclick="init(0)" id="btn_first_mode"><i class="material-icons">&#xE3E7;</i> Sprint 40行竞速</a>
+        <a class="btn" onclick="init(1)"><i class="material-icons">&#xE153;</i> Marathon 马拉松</a>
+        <!-- <a class="btn" onclick="init(2)">Play Ultra</a> -->
+        <a class="btn" onclick="init(3,{digOffset:0})"><i class="material-icons">&#xE800;</i> Dig! 挖掘机</a>
+        <a class="btn" onclick="init(4,{digraceType:'easy'})"><i class="material-icons">&#xE91D;</i> Dig Race 挖掘练习</a>
+        <a class="btn" onclick="init(5)"><i class="material-icons">&#xE2C3;</i> Zen 修仙模式</a>
 
-    <div class=menu>
-      <h2>Settings</h2>
-      <div id=settings>
+        <a class="btn" onclick="menu(2)" id="btnbinds"><i class="material-icons">&#xE021;</i> Controls 调整按键</a>
+        <a class="btn" onclick="menu(1)"><i class="material-icons">&#xE869;</i> Settings 调整设定</a>
+        <a class="btn" onclick="menu(6,1)"><i class="material-icons">&#xE04A;</i> Replay 录像回放</a>
+        <!--<a class="btn highlight" onclick="menu(7,1);this.classList.remove('highlight')"><i class="material-icons">&#xE8E5;</i> Harder 更厉害的</a>-->
       </div>
-      <div style=clear:both><a class=button onclick=menu(0)>Done</a></div>
+      <h1>Tetr.js - Dig</h1>
+      <p>deep♂dark♂fantasy<br />
+        when shit happens, hit Ctrl+F5.</p>
+      <div class="btn-container">
+        <a class="btn" onclick="init(1,{marathonType:1})">Classic-Fast 高速经典</a>
+        <a class="btn" onclick="init(3,{digOffset:500})"><i class="material-icons">&#xE3A8;</i> Dig - 500+</a>
+        <a class="btn" onclick="init(3,{digOffset:1000})"><i class="material-icons">&#xE3A7;</i> Dig - 1000+</a>
+        <a class="btn" onclick="init(3,{digOffset:1500})"><i class="material-icons">&#xE3A6;</i> Dig - 1500+</a>
+        <a class="btn" onclick="init(3,{digOffset:2000})"><i class="material-icons">&#xE3E4;</i> NUKE 核能</a>
+        <a class="btn" onclick="init(4,{digraceType:'checker'})"><i class="material-icons">&#xE540;</i> Dig Hard 疯狂挖掘</a>
+        <a class="btn" onclick="init(6)"><i class="material-icons">&#xE01F;</i> 20G 瞬降模式</a>
+        <a class="btn" onclick="init(7)"><i class="material-icons">&#xE034;</i> Dig Zen 沉思挖掘</a>
+        <div class="btn-line">
+          <a class="btn btn-inline" style="width:15%;" onclick="init(0,{lineLimit:1})">1</a>
+          <a class="btn btn-inline" style="width:15%;" onclick="init(0,{lineLimit:4})">4</a>
+          <a class="btn btn-inline" style="width:33%;" onclick="init(0,{lineLimit:25})">B-TYPE</a>
+        </div>
+        <div class="btn-line">
+          <a class="btn btn-inline" style="width:30%;" onclick="init(0,{lineLimit:100})">100</a>
+          <a class="btn btn-inline" style="width:39%;" onclick="init(0,{lineLimit:1000})">1000</a>
+        </div>
+        <a class="btn" onclick="init(0,{pieceSet:1})">Spr_nt 困难40行</a>
+        <a class="btn" onclick="init(0,{pieceSet:2})">Heaven 简单40行</a>
+        <a class="btn" onclick="init(0,{delType:1})">Whole 整块40行 α</a>
+        <a class="btn" onclick="init(0,{symmetry:1})">Symmetry 对称40行 α</a>
+        <a class="btn" onclick="init(4,{digraceType:'easy',symmetry:1})">SymmDig 对称挖掘 α</a>
+        <a class="btn" onclick="init(4,{digraceType:'easy',triplet:1})">Triplet 三消游戏 α</a>
+        <a class="btn" onclick="init(0,{backFire:2})">Backfire 自攻自受</a>
+        <div class="btn-line">
+          <a class="btn btn-inline" style="width:20%;" onclick="init(0,{backFire:2,lineLimit:100})">100</a>
+          <a class="btn btn-inline" style="width:20%;" onclick="init(0,{backFire:1})">BF1</a>
+          <a class="btn btn-inline" style="width:23%;" onclick="init(0,{backFire:4})">MAX</a>
+        </div>
+        <a class="btn" onclick="init(0,{noRotation:1})">Fixed 无旋转40行</a>
+        <div class="btn-line">
+          <a class="btn btn-inline" style="width:39%;" onclick="init(0,{validPos:1})">Fixed lite</a>
+          <a class="btn btn-inline" style="width:30%;" onclick="init(0,{validPos:2})">kid's</a>
+        </div>
+        <a class="btn" onclick="init(0,{fallMode:1})">No Gravity 反重力40行</a>
+        <a class="btn" onclick="init(0,{isolation:2})">Isolation 对对碰40行 α</a>
+        <a class="btn" onclick="init(4,{digraceType:'map'})">map dig (wip)</a>
+        <!--<a class="btn" onclick="menu(void 0,-1)">Back 返回</a>-->
+      </div>
+    </nav>
+
+    <div class="menu">
+      <h2>Settings 调整设定</h2>
+      <div id="settings">
+      </div>
+      <div style="clear:both"><a class="btn" onclick="menu(0)">Done 完成</a></div>
     </div>
 
-    <div class=menu>
-      <h2>Controls</h2>
-      <p>Click on the control you want to change, then press any key.
-      <table id=controls>
-        <tr> <th>Move Left:    <td id=moveLeft>←
-        <tr> <th>Move Right:   <td id=moveRight>→
-        <tr> <th>Move Down:    <td id=moveDown>↓
-        <tr> <th>Hard Drop:    <td id=hardDrop>Space
-        <tr> <th>Hold:         <td id=holdPiece>C
-        <tr> <th>Spin Right:   <td id=rotRight>X
-        <tr> <th>Spin Left:    <td id=rotLeft>Z
-        <tr> <th>Spin 180:     <td id=rot180>Shift
-        <tr> <th>Retry:        <td id=retry>R
-        <tr> <th>Pause:        <td id=pause>Esc
+    <div class="menu">
+      <h2>Controls 调整按键</h2>
+      <p>Click on the item you want to change, then press any key.<br/>
+        点击要修改的键位，然后按键。</p>
+      <table id="controls">
+        <tr><th>Move <i class="material-icons">&#xE5C4;</i> 左移</th><td id="moveLeft">←</td></tr>
+        <tr><th>Move <i class="material-icons">&#xE5C8;</i> 右移</th><td id="moveRight">→</td></tr>
+        <tr><th>Triple <i class="material-icons">&#xE5C4;</i> 左三</th><td id="moveLeft3">---</td></tr>
+        <tr><th>Triple <i class="material-icons">&#xE5C8;</i> 右三</th><td id="moveRight3">---</td></tr>
+        <tr><th>Move <i class="material-icons">&#xE906;</i> 软降</th><td id="moveDown">↓</td></tr>
+        <tr><th>Drop <i class="material-icons">&#xE2C4;</i> 硬降</th><td id="hardDrop">Space</td></tr>
+        <tr><th>Hold <i class="material-icons">&#xE8D4;</i> 暂存</th><td id="holdPiece">C</td></tr>
+        <tr><th>Spin <i class="material-icons">&#xE15A;</i> 右转</th><td id="rotRight">X</td></tr>
+        <tr><th>Spin <i class="material-icons">&#xE166;</i> 左转</th><td id="rotLeft">Z</td></tr>
+        <tr><th>Spin <i class="material-icons">&#xE5D5;</i> 半周转</th><td id="rot180">Shift</td></tr>
+        <tr><th>Retry <i class="material-icons">&#xE040;</i> 重来</th><td id="retry">R</td></tr>
+        <tr><th>Pause <i class="material-icons">&#xE034;</i> 暂停</th><td id="pause">Esc</td></tr>
       </table>
-      <div style=clear:both><a class=button onclick=menu(0)>Done</a></div>
+      <a class="btn btn-bottom" onclick="menu(0);document.getElementById('btnbinds').classList.remove('highlight');">Done 完成</a>
     </div>
 
-    <nav id=go class=menu>
+    <nav id="go" class="menu">
+      <div class="btn-container btn-container-bottom">
+        <a class="btn" onclick="init(gametype,gameparams)">Retry 再来</a>
+        <div class="btn-line">
+          <a class="btn btn-inline" onclick="init('replay')" style="width: 50%;">Replay 回放 </a>
+          <a class="btn btn-inline" onclick="showreplaydata(curreplaydata())" style="width: 20%"><i class="material-icons">&#xE161;</i></a>
+        </div>
+        <a class="btn highlight" onclick="menu(5,1);this.classList.remove('highlight')">Rankings 排行</a>
+        <a class="btn" onclick="menu(0)">Back 回菜单</a>
+      </div>
+    </nav>
+
+    <nav id="pause" class="menu">
+      <div class="btn-container btn-container-bottom">
+        <a class="btn" onclick="unpause()">Return 继续</a>
+        <a class="btn" onclick="init(gametype,gameparams)">Retry 重来</a>
+        <a class="btn" onclick="menu(0)">Back 回菜单</a>
+      </div>
+    </nav>
+
+    <div id="leader" class="menu">
+      <h2>Rankings 排行</h2>
+
+      <div id="leaderboard"></div>
+      <div style="clear:both"><a class="btn" onclick="menu(void 0,-1)">Back 返回</a></div>
+    </div>
+
+    <nav id="replay" class="menu">
+      <h2>Replay 回放数据</h2>
+
+      <p>Ctrl+C 复制 / Ctrl+V 粘贴</p>
+      <textarea id="replaydata" spellcheck="false"></textarea>
       <ul>
-        <li><a onclick=init(gametype)>Retry</a>
-        <li><a onclick=init(replay)>Watch Replay</a>
-        <li><a onclick=menu(0)>Main Menu</a>
+        <li><a class="btn" onclick="tryreplaydata()">Watch 观看</a></li>
+        <li><a class="btn" onclick="menu(void 0,-1)">Back 返回</a></li>
       </ul>
     </nav>
 
-    <nav id=pause class=menu>
-      <ul>
-        <li><a onclick=unpause()>Return</a>
-        <li><a onclick=init(gametype)>Retry</a>
-        <li><a onclick=menu(0)>Main Menu</a>
-      </ul>
+    <nav class="menu">
+
     </nav>
+
   </div>
 
-  <div id=c>
+  <div id="c">
     <h3>Next</h3>
-    <canvas id=preview></canvas>
+    <canvas id="preview"></canvas>
   </div>
+
 </div>
 
-<canvas id=sprite></canvas>
-<script src=tetris.js></script>
-<script src=piece.js></script>
-<script src=stack.js></script>
-<script src=hold.js></script>
-<script src=preview.js></script>
-<script src=menu.js></script>
+<div style="display:none;" id="divdebug">debug</div>
+
+<canvas id="sprite"></canvas>
+<script type="text/javascript" src="bigmin.js"></script>
+<script type="text/javascript" src="polyfill.js"></script>
+<script type="text/javascript" src="data.js"></script>
+<script type="text/javascript" src="tetris.js"></script>
+<script type="text/javascript" src="piece.js"></script>
+<script type="text/javascript" src="stack.js"></script>
+<script type="text/javascript" src="hold.js"></script>
+<script type="text/javascript" src="preview.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript" src="bg.js"></script>
+<script type="text/javascript" src="ranking.js"></script>
+<script type="text/javascript" src="compress.js"></script>
+<script type="text/javascript" src="sound.js"></script>
+<script type="text/javascript" src="touch.js"></script>
+<!--<script type="text/javascript" src="http://cdn.jsdelivr.net/npm/eruda" onload="eruda.init()"></script>-->
+
+</body>
+</html>
