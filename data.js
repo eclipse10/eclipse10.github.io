@@ -764,7 +764,7 @@ var lockDelayLimit = void 0;
 var mySettings = {
   DAS: 6,
   ARR: 0,
-  SoftDrop: 20,
+  SoftDrop: 12,
   Gravity: 0,
   LockDelay: 30,
   RotSys: 0,
